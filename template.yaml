@@ -1,5 +1,5 @@
 zabbix_export:
-  version: '6.4'
+  version: '7.0'
   template_groups:
     - uuid: a571c0d144b14fd4a87a9d9b2aa9fcd6
       name: Templates/Applications
@@ -7,8 +7,7 @@ zabbix_export:
     - uuid: c6d9591726524faa924d6f52b404579c
       template: 'OPNSense Router'
       name: 'OPNSense Router'
-      description: |
-        Templte for opnsense specific data points.
+      description: 'Templte for opnsense specific data points.'
       groups:
         - name: Templates/Applications
       discovery_rules:
@@ -16,26 +15,25 @@ zabbix_export:
           name: 'Gateway Discovery'
           key: opn.gws
           delay: 30m
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
           item_prototypes:
             - uuid: 38c5a9125070459490e534e23c0fae46
               name: '{#GW_NAME}: Delay'
-              type: ZABBIX_ACTIVE
               key: 'opn.gw_data[{#GW_NAME},delay]'
               history: 30d
-              trends: 90d
               value_type: FLOAT
+              trends: 90d
               units: ms
             - uuid: 134216db93784586802618b20beb164d
               name: '{#GW_NAME}: Loss'
-              type: ZABBIX_ACTIVE
               key: 'opn.gw_data[{#GW_NAME},loss]'
               history: 30d
-              trends: 90d
               value_type: FLOAT
+              trends: 90d
               units: '%'
             - uuid: af596e681fa840e3aec06d6c05b37f0b
               name: '{#GW_NAME}: Status'
-              type: ZABBIX_ACTIVE
               key: 'opn.gw_data[{#GW_NAME},status]'
               delay: 5m
               history: 30d
@@ -49,11 +47,10 @@ zabbix_export:
                   priority: AVERAGE
             - uuid: b9c696b9b0934c419fe0a2b925c25a50
               name: '{#GW_NAME}: StdDev'
-              type: ZABBIX_ACTIVE
               key: 'opn.gw_data[{#GW_NAME},stddev]'
               history: 30d
-              trends: 90d
               value_type: FLOAT
+              trends: 90d
               units: ms
           graph_prototypes:
             - uuid: 7f6eb8ddaef845b09133a38ddd17a091
@@ -81,10 +78,11 @@ zabbix_export:
               - macro: '{#IF_DESC}'
                 operator: EXISTS
                 formulaid: A
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
           item_prototypes:
             - uuid: 17a69d6c0c9a4adaae7a39bde8ceb89f
               name: '{#IF_DESC}: Traffic In'
-              type: ZABBIX_ACTIVE
               key: 'net.if.in[{#IF_NAME}, bytes]'
               history: 30d
               trends: 90d
@@ -100,7 +98,6 @@ zabbix_export:
                   value: '{#IF_DESC}'
             - uuid: c9b4d58bb7ed4cff96b195744d560d58
               name: '{#IF_DESC}: Multicast'
-              type: ZABBIX_ACTIVE
               key: 'net.if.in[{#IF_NAME}, multicast]'
               history: 30d
               trends: 90d
@@ -116,7 +113,6 @@ zabbix_export:
                   value: '{#IF_DESC}'
             - uuid: 4f7b9e59fe7649dea209a839a9ec5dc8
               name: '{#IF_DESC}: Traffic Out'
-              type: ZABBIX_ACTIVE
               key: 'net.if.out[{#IF_NAME}, bytes]'
               history: 30d
               trends: 90d
@@ -132,7 +128,6 @@ zabbix_export:
                   value: '{#IF_DESC}'
             - uuid: 76b047a2196b48ea8808e896fbe7d104
               name: '{#IF_DESC}: Traffic'
-              type: ZABBIX_ACTIVE
               key: 'net.if.total[{#IF_NAME}, bytes]'
               history: 30d
               trends: 90d
@@ -148,7 +143,6 @@ zabbix_export:
                   value: '{#IF_DESC}'
             - uuid: 25829d82566d4929b56792b4df7b3cbc
               name: '{#IF_DESC}: Errors'
-              type: ZABBIX_ACTIVE
               key: 'net.if.total[{#IF_NAME}, errors]'
               history: 30d
               trends: 90d
@@ -164,7 +158,6 @@ zabbix_export:
                   value: '{#IF_DESC}'
             - uuid: 71f57af951d44c2ab892f1cfb6f40ec6
               name: '{#IF_DESC}: CARP Status'
-              type: ZABBIX_ACTIVE
               key: 'opn.interface_value[{#IF_NAME},carp]'
               delay: 5m
               history: 30d
@@ -176,6 +169,23 @@ zabbix_export:
                   value: network
                 - tag: interface
                   value: '{#IF_DESC}'
+            - uuid: 746ba0e7ce98442da57d3dc4cb0b5193
+              name: '{#IF_DESC}: Status'
+              key: 'opn.interface_value[{#IF_NAME},status]'
+              delay: 5m
+              history: 30d
+              value_type: CHAR
+              trends: '0'
+              tags:
+                - tag: component
+                  value: network
+                - tag: interface
+                  value: '{#IF_DESC}'
+              trigger_prototypes:
+                - uuid: a96d73cdb16d44f68c90aaa48d9b5577
+                  expression: 'last(/OPNSense Router/opn.interface_value[{#IF_NAME},status])<>"active"'
+                  name: '{#IF_DESC} - Down'
+                  priority: AVERAGE
           graph_prototypes:
             - uuid: d90e72f5bd6d4d79a830e3aa86ed4ded
               name: '{#IF_DESC}: Traffic'
