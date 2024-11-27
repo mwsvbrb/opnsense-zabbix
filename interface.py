@@ -56,6 +56,9 @@ with subprocess.Popen(['ifconfig'], stdout=subprocess.PIPE) as process:
                 continue
 
             field_name = data[0]
+            # Special handling for loopback interface
+            if interface['name'] == 'lo0' and 'status' not in interface:
+                interface['status'] = 'active'  # Assuming loopback is always active
             if want_value and field_name != want_value:
                 continue
 
@@ -74,7 +77,4 @@ with subprocess.Popen(['ifconfig'], stdout=subprocess.PIPE) as process:
 if not want_name:
     print(json.dumps(interfaces, indent=2))
 else:
-    if want_name == 'lo0' and want_value == 'status':
-        print('active')
-    else:    
-        print(interfaces[0].get(want_value, 'Value not found'))
+    print(interfaces[0].get(want_value, 'Value not found'))
