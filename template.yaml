@@ -211,4 +211,22 @@ zabbix_export:
           lld_macro_paths:
             - lld_macro: '{#IF_DESC}'
               path: $.description
-            - lld_macro: '{#
+            - lld_macro: '{#IF_NAME}'
+              path: $.name
+      valuemaps:
+        - uuid: 541d3058990044d09945f09ed1146733
+          name: 'Carp Status'
+          mappings:
+            - value: '0'
+              newvalue: MASTER
+            - value: '1'
+              newvalue: BACKUP
+        - uuid: 777832e56f9240198810306057496ea8
+          name: 'Gateway Status'
+          mappings:
+            - value: '0'
+              newvalue: Up
+            - value: '1'
+              newvalue: Warn
+            - value: '2'
+              newvalue: Down
