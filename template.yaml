@@ -170,7 +170,7 @@ zabbix_export:
                 - tag: interface
                   value: '{#IF_DESC}'
               trigger_prototypes:
-                - uuid: d860a792-17a7-4dfb-9d4a-bbfea35b8e1c
+                - uuid: d860a79217a74dfb9d4abbfea35b8e1c
                   expression: 'last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp])<>last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp])'
                   name: '{#IF_DESC} - CARP Status Changed'
                   priority: AVERAGE
