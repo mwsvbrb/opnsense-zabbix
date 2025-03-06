@@ -7,7 +7,7 @@ zabbix_export:
     - uuid: c6d9591726524faa924d6f52b404579c
       template: 'OPNSense Router'
       name: 'OPNSense Router'
-      description: 'Templte for opnsense specific data points.'
+      description: 'Template for opnsense specific data points.'
       groups:
         - name: Templates/Applications
       discovery_rules:
@@ -171,9 +171,9 @@ zabbix_export:
                   value: '{#IF_DESC}'
               trigger_prototypes:
                 - uuid: d860a792-17a7-4dfb-9d4a-bbfea35b8e1c
-                expression: 'last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp])<>last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp],"#1")'
-                name: '{#IF_DESC} - CARP Status Changed'
-                priority: AVERAGE
+                  expression: 'last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp])<>last(/OPNSense Router/opn.interface_value[{#IF_NAME},carp],"#1")'
+                  name: '{#IF_DESC} - CARP Status Changed'
+                  priority: AVERAGE
             - uuid: 746ba0e7ce98442da57d3dc4cb0b5193
               name: '{#IF_DESC}: Status'
               key: 'opn.interface_value[{#IF_NAME},status]'
@@ -211,22 +211,4 @@ zabbix_export:
           lld_macro_paths:
             - lld_macro: '{#IF_DESC}'
               path: $.description
-            - lld_macro: '{#IF_NAME}'
-              path: $.name
-      valuemaps:
-        - uuid: 541d3058990044d09945f09ed1146733
-          name: 'Carp Status'
-          mappings:
-            - value: '0'
-              newvalue: MASTER
-            - value: '1'
-              newvalue: BACKUP
-        - uuid: 777832e56f9240198810306057496ea8
-          name: 'Gateway Status'
-          mappings:
-            - value: '0'
-              newvalue: Up
-            - value: '1'
-              newvalue: Warn
-            - value: '2'
-              newvalue: Down
+            - lld_macro: '{#
